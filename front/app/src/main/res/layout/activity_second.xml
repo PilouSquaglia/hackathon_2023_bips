@@ -22,6 +22,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:padding="8dp"
         android:background="@color/lightGray"
         tools:listitem="@layout/item_city" />
