@@ -22,9 +22,11 @@ object ApiClient {
 
 class SecondActivity : AppCompatActivity() {
 
-    private fun fetchDataFromApi() {
+    private fun fetchDataFromApi(formattedDate: String) {
         val apiService = ApiClient.retrofit.create(ApiService::class.java)
-        val call = apiService.getTravelData()
+        val call = apiService.getTravelData(formattedDate)
+
+        println(call.request().url())
 
         call.enqueue(object : Callback<TravelResponse> {
             override fun onResponse(call: Call<TravelResponse>, response: Response<TravelResponse>) {
@@ -61,14 +63,13 @@ class SecondActivity : AppCompatActivity() {
                 }
             }
 
-
-
             override fun onFailure(call: Call<TravelResponse>, t: Throwable) {
                 // Log the failure reason
                 println("Failure: ${t.message}")
             }
         })
     }
+
 
     // Helper function to build a string from the list of cities
     private fun buildCityListString(cityList: List<String>): String {
@@ -91,10 +92,13 @@ class SecondActivity : AppCompatActivity() {
             val targetFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val date = originalFormat.parse(selectedDate)
             val formattedDate = targetFormat.format(date)
+
             println(formattedDate)
+
+            fetchDataFromApi(formattedDate)
         }
 
-        fetchDataFromApi()
+
 
 //        val dateTextView: TextView = findViewById(R.id.dateTextView)
 //
