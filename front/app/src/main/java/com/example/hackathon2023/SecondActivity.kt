@@ -3,6 +3,8 @@ package com.example.hackathon2023
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,6 +23,8 @@ object ApiClient {
 }
 
 class SecondActivity : AppCompatActivity() {
+
+    private lateinit var cityListRecyclerView: RecyclerView
 
     private fun fetchDataFromApi(formattedDate: String) {
         val apiService = ApiClient.retrofit.create(ApiService::class.java)
@@ -53,8 +57,12 @@ class SecondActivity : AppCompatActivity() {
                         println(cityNames2)
 
                         // Update the TextView with the list of cities
-                        val cityListTextView: TextView = findViewById(R.id.cityListTextView)
-                        cityListTextView.text = "Liste des communes à parcourir dans l'ordre : \n\n" + cityNames2.joinToString(separator = "\n")
+//                        val cityListTextView: TextView = findViewById(R.id.cityListTextView)
+//                        cityListTextView.text = "Liste des communes à parcourir dans l'ordre : \n\n" + cityNames2.joinToString(separator = "\n")
+
+                            // Update the RecyclerView with the list of cities
+                            val cityAdapter = CityAdapter(cityNames2)
+                            cityListRecyclerView.adapter = cityAdapter
                     }
                 } else {
                     // Log the error message and response code
@@ -80,23 +88,24 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
 
-        // Récupérer l'intent qui a démarré cette activité
-        val intent = intent
+        cityListRecyclerView = findViewById(R.id.recyclerView)
 
-        // Vérifier si l'intent contient la clé "selectedDate"
+        // Ajouter un LinearLayoutManager pour le RecyclerView
+        val layoutManager = LinearLayoutManager(this)
+        cityListRecyclerView.layoutManager = layoutManager
+
+        val intent = intent
         if (intent.hasExtra("selectedDate")) {
-            // Extraire la date de l'intent
             val selectedDate = intent.getStringExtra("selectedDate")
-            // Convertir la date dans le nouveau format "yyyy-MM-dd"
             val originalFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val targetFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val date = originalFormat.parse(selectedDate)
             val formattedDate = targetFormat.format(date)
 
-            println(formattedDate)
-
-            fetchDataFromApi(formattedDate)
+            fetchDataFromApi(formattedDate) // Déplacez cet appel ici
         }
+    }
+
 
 
 
@@ -107,7 +116,7 @@ class SecondActivity : AppCompatActivity() {
 //
 //        // Afficher la date dans le TextView de cette activité
 //        dateTextView.text = "Date sélectionnée : $selectedDate"
-    }
+
 
     private fun buildCityListString(travelResponse: TravelResponse): String {
         val cityList = mutableListOf<String>()

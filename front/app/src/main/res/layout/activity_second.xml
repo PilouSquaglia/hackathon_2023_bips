@@ -3,28 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightGray">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         android:elevation="4dp"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        android:title="ça vie"
+        android:titleTextColor="@color/black" />
 
-    <TextView
-        android:id="@+id/cityListTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="City List:"
-        android:textSize="18sp"
-        android:textColor="#000000"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold" />
-
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:background="@color/lightGray"
+        tools:listitem="@layout/item_city" />
 
 </RelativeLayout>
